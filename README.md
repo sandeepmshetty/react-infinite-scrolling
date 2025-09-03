@@ -68,8 +68,12 @@ src/
 │   ├── virtualization.ts               # Virtualization helper functions
 │   ├── constants.ts                     # 🆕 Centralized configuration constants
 │   └── index.ts                         # Utils barrel export
+├── assets/
+│   └── react.svg                        # React logo asset
 ├── App.tsx                              # Root component with mode switching
-└── main.tsx                             # Application entry point
+├── App.css                              # Root component styling
+├── main.tsx                             # Application entry point
+└── vite-env.d.ts                        # Vite TypeScript environment types
 ```
 
 ## 🎯 How Virtualization Works
