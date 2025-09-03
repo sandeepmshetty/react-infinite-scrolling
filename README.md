@@ -8,8 +8,11 @@ A vanilla React implementation of infinite scrolling using the IntersectionObser
 - ✅ **Vanilla React**: No third-party infinite scroll libraries (react-window, react-virtualized)
 - ✅ **IntersectionObserver API**: Modern browser API for efficient scroll detection
 - ✅ **Custom Virtualization**: Only renders visible items for massive performance gains
-- ✅ **Custom Hooks**: Modular, reusable hooks for data fetching, intersection observation, and virtualization
+- ✅ **Advanced Custom Hooks**: Modular, reusable hooks with composition patterns
+- ✅ **Separation of Concerns**: Clean architecture with focused components and hooks
+- ✅ **Centralized Configuration**: All constants and settings in dedicated files
 - ✅ **TypeScript**: Full type safety throughout the application
+- ✅ **Reusable Components**: Shared UI components across different implementations
 - ✅ **Skeleton Loading**: Optimized loading states to prevent Cumulative Layout Shift (CLS)
 - ✅ **Error Handling**: Robust error handling with retry functionality
 - ✅ **Performance Optimized**: Prevents multiple concurrent API requests
@@ -53,6 +56,7 @@ src/
 │   ├── useIntersectionObserver.ts       # Custom hook for scroll detection
 │   ├── useVirtualization.ts             # Custom hook for virtualization logic
 │   ├── useScrollPosition.ts             # Custom hook for scroll position tracking
+│   ├── useVirtualizedInfiniteScroll.ts  # 🆕 Combined hook for virtualized infinite scroll
 │   └── index.ts                         # Hooks barrel export
 ├── types/
 │   ├── domain.ts                        # Core business domain types (Post, etc.)
@@ -62,7 +66,7 @@ src/
 ├── utils/
 │   ├── api.ts                           # API utilities and configuration
 │   ├── virtualization.ts               # Virtualization helper functions
-│   ├── constants.ts                     # Application constants
+│   ├── constants.ts                     # 🆕 Centralized configuration constants
 │   └── index.ts                         # Utils barrel export
 ├── App.tsx                              # Root component with mode switching
 └── main.tsx                             # Application entry point
@@ -121,6 +125,12 @@ npm run dev
 
 ### Custom Hooks
 
+**useVirtualizedInfiniteScroll Hook:** 🆕
+- Combines data fetching, virtualization, and scroll logic
+- Implements composition pattern for complex functionality
+- Provides clean interface for virtualized infinite scroll components
+- Handles load-more logic and error recovery automatically
+
 **useInfiniteData Hook:**
 - Manages paginated data fetching with TypeScript generics
 - Handles loading states and error management
@@ -151,25 +161,83 @@ npm run dev
 - Handles error states with retry functionality
 
 **VirtualizedInfiniteScrollList Component:**
-- High-performance virtualized infinite scroll
-- Only renders visible items plus buffer
+- High-performance virtualized infinite scroll using composition
+- Uses `useVirtualizedInfiniteScroll` hook for all logic
+- Leverages shared components from common folder
+- Focused solely on UI rendering with clean separation of concerns
 - Uses absolute positioning for smooth scrolling
 - Maintains constant memory usage regardless of data size
 
 **Common Components:**
-- `PostItem`: Reusable post display component
-- `PostSkeleton`: Loading skeleton with fixed dimensions
+- `PostItem`: Reusable post display component with consistent styling
+- `PostSkeleton`: Loading skeleton with fixed dimensions to prevent CLS
 - `ErrorMessage`: Error display with retry functionality
+- `LoadingIndicator`: Consistent loading states across components
+- `EndMessage`: End-of-list message with item count
 
-## Performance Optimizations
+## Architecture & Best Practices
 
+### 🏗️ Separation of Concerns
+- **Custom Hooks**: Business logic separated from UI components
+- **Composition Pattern**: `useVirtualizedInfiniteScroll` combines multiple hooks
+- **Reusable Components**: Shared UI components in `common/` folder
+- **Centralized Configuration**: All constants in `utils/constants.ts`
+
+### ⚙️ Configuration Management
+```typescript
+// All configuration centralized
+export const VIRTUALIZATION_CONFIG = {
+  ITEM_HEIGHT: 180,
+  CONTAINER_HEIGHT: 600,
+  OVERSCAN: 3,
+  LOAD_MORE_BUFFER: 5,
+} as const;
+
+export const UI_MESSAGES = {
+  LOADING: 'Loading more posts...',
+  END_OF_LIST: (count: number) => `🎉 You've reached the end! Loaded all ${count} posts.`,
+} as const;
+```
+
+### 🔧 Hook Composition Pattern
+```typescript
+// Complex functionality through composition
+const useVirtualizedInfiniteScroll = () => {
+  const dataLogic = useInfiniteData();
+  const virtualizationLogic = useVirtualization();
+  const scrollLogic = useScrollPosition();
+  
+  // Combine and return unified interface
+  return { ...dataLogic, ...virtualizationLogic, ...scrollLogic };
+};
+```
 - **Virtualization**: Only renders visible items, maintaining constant memory usage
 - **Skeleton Loading**: Fixed-height skeleton components prevent layout shift
 - **Intersection Observer**: Efficient scroll detection without scroll event listeners
 - **Request Deduplication**: Prevents multiple API calls for the same page
+- **Hook Composition**: Efficient combination of related logic
+- **Reusable Components**: Consistent UI patterns reduce bundle size
+- **Centralized Configuration**: Easy tuning without code changes
 - **TypeScript**: Full type safety prevents runtime errors and improves DX
 - **Modular Architecture**: Separation of concerns with organized folder structure
 - **CSS Optimizations**: Font display optimizations and smooth animations
+
+## 🎉 Recent Improvements
+
+### ✨ Architecture Refactoring (Latest Update)
+- **New Combined Hook**: `useVirtualizedInfiniteScroll` for better composition
+- **Centralized Configuration**: All constants moved to `utils/constants.ts`
+- **Enhanced Separation of Concerns**: Components focused only on UI rendering
+- **Reusable Component Library**: Shared components in `common/` folder
+- **Improved Type Safety**: Better TypeScript interfaces throughout
+- **Cleaner Imports**: Path aliases for maintainable import statements
+
+### 🔧 Key Architectural Benefits
+- **Maintainability**: Changes to configuration affect entire app from one place
+- **Reusability**: Components can be used across different implementations
+- **Testability**: Separated logic makes unit testing easier
+- **Performance**: Optimized hook composition reduces re-renders
+- **Developer Experience**: Clean, focused components are easier to understand
 
 ## API Integration
 

@@ -3,3 +3,4 @@ export { useInfiniteData } from './useInfiniteData';
 export { useIntersectionObserver } from './useIntersectionObserver';
 export { useVirtualization } from './useVirtualization';
 export { useScrollPosition } from './useScrollPosition';
+export { useVirtualizedInfiniteScroll } from './useVirtualizedInfiniteScroll';
