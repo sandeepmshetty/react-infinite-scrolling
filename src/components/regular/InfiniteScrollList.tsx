@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
-import { useInfiniteData, type Post } from '../hooks/useInfiniteData';
-import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
+import type { Post } from '@/types';
+import { useInfiniteData } from '@/hooks/useInfiniteData';
+import { useIntersectionObserver } from '@/hooks/useIntersectionObserver';
 import './InfiniteScrollList.css';
 
 interface PostItemProps {

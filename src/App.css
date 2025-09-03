@@ -14,3 +14,47 @@ body {
 * {
   box-sizing: border-box;
 }
+
+.app {
+  min-height: 100vh;
+}
+
+/* Toggle between regular and virtualized modes */
+.toggle-container {
+  text-align: center;
+  padding: 20px;
+  background: #ffffff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+}
+
+.toggle-button {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+}
+
+.toggle-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
+}
+
+.toggle-button:active {
+  transform: translateY(0);
+}
+
+.toggle-description {
+  margin: 10px 0 0 0;
+  color: #64748b;
+  font-size: 0.9em;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: auto;
+}

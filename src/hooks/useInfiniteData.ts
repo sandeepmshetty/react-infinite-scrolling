@@ -1,23 +1,6 @@
 import { useState, useCallback, useRef, useEffect } from 'react';
-
-export interface Post {
-  id: number;
-  userId: number;
-  title: string;
-  body: string;
-}
-
-interface UseInfiniteDataReturn {
-  data: Post[];
-  loading: boolean;
-  error: string | null;
-  hasNextPage: boolean;
-  loadNextPage: () => Promise<void>;
-  reset: () => void;
-}
-
-const POSTS_PER_PAGE = 10;
-const TOTAL_POSTS = 100; // JSONPlaceholder has 100 posts
+import type { Post, UseInfiniteDataReturn } from '@/types';
+import { fetchPosts, API_CONFIG } from '@/utils';
 
 export const useInfiniteData = (): UseInfiniteDataReturn => {
   const [data, setData] = useState<Post[]>([]);
@@ -27,19 +10,7 @@ export const useInfiniteData = (): UseInfiniteDataReturn => {
   const [initialized, setInitialized] = useState(false);
   const loadingRef = useRef(false);
 
-  const hasNextPage = data.length < TOTAL_POSTS;
-
-  const fetchPosts = async (startIndex: number): Promise<Post[]> => {
-    const response = await fetch(
-      `https://jsonplaceholder.typicode.com/posts?_limit=${POSTS_PER_PAGE}&_start=${startIndex}`
-    );
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    return response.json();
-  };
+  const hasNextPage = data.length < API_CONFIG.TOTAL_POSTS;
 
   const loadNextPage = useCallback(async () => {
     // Prevent multiple concurrent requests
@@ -57,7 +28,7 @@ export const useInfiniteData = (): UseInfiniteDataReturn => {
     setError(null);
 
     try {
-      const startIndex = currentPage * POSTS_PER_PAGE;
+      const startIndex = currentPage * API_CONFIG.POSTS_PER_PAGE;
       const newPosts = await fetchPosts(startIndex);
       
       setData(prevData => [...prevData, ...newPosts]);

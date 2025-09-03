@@ -1,14 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
-
-interface UseIntersectionObserverProps {
-  threshold?: number;
-  rootMargin?: string;
-}
+import type { UseIntersectionObserverReturn, IntersectionObserverConfig } from '@/types';
 
 export const useIntersectionObserver = ({
   threshold = 0.1,
   rootMargin = '0px'
-}: UseIntersectionObserverProps = {}) => {
+}: IntersectionObserverConfig = {}): UseIntersectionObserverReturn => {
   const [isIntersecting, setIsIntersecting] = useState(false);
   const targetRef = useRef<HTMLDivElement>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
@@ -43,7 +39,7 @@ export const useIntersectionObserver = ({
         observerRef.current = null;
       }
     };
-  }, [threshold, rootMargin]); // Remove threshold and rootMargin from dependencies to prevent recreation
+  }, [threshold, rootMargin]);
   
   const reset = () => {
     setIsIntersecting(false);
